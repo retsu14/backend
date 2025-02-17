@@ -1,27 +1,27 @@
-require("dotenv").config()
-const express = require("express")
-const connectDb = require("./db/dbConfig")
-const cookie = require("cookie-parser")
-const cors = require("cors")
-const app = express()
-const port = process.env.PORT || 3000
+require("dotenv").config();
+const express = require("express");
+const connectDb = require("./db/dbConfig");
+const cookie = require("cookie-parser");
+const cors = require("cors");
+const app = express();
+const port = process.env.PORT || 3000;
 
-app.use(express.json())
-app.use(cookie())
+app.use(express.json());
+app.use(cookie());
 app.use(
-    cors({
-        origin: `http://localhost:5000`,
-        credentials: true,
-        methods: ["GET", "POST", "PUT", "DELETE"],
-        allowedHeaders: ["Content-Type", "Authorization", "Bearer"],
-    })
+  cors({
+    origin: "*",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization", "Bearer"],
+  })
 );
 app.use(express.urlencoded({ extended: true }));
 
-connectDb()
+connectDb();
 
-app.use("/api/auth", require("./routes/auth/authRoutes"))
+app.use("/api/auth", require("./routes/auth/authRoutes"));
 
 app.listen(port, () => {
-    console.log(`http://localhost:${port}`)
-})
+  console.log(`http://localhost:${port}`);
+});
