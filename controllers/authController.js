@@ -1,8 +1,16 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
+const { validationResult } = require('express-validator');
 
 const register = asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        const errorMessages = errors.array().map((error) => error.msg);
+        return res.status(400).json({ message: errorMessages });
+    }
+
     const { name, email, password, confirmPassword } = req.body;
 
     if (!name || !email || !password || !confirmPassword) {
@@ -34,6 +42,13 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        const errorMessages = errors.array().map((error) => error.msg);
+        return res.status(400).json({ message: errorMessages });
+    }
+
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -66,6 +81,20 @@ const login = asyncHandler(async (req, res) => {
     }
 })
 
+const logout = asyncHandler(async (req, res) => {
+    try {
+        res.cookie("jwt", "", { maxAge: 0 });
+        res.status(200).json({
+            message: "Logged out successfully",
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "error",
+        });
+    }
+});
+
 const generateToken = (id, res) => {
     const token = jwt.sign({ id }, process.env.JWT, {
         expiresIn: "1d",
@@ -78,4 +107,4 @@ const generateToken = (id, res) => {
     });
 };
 
-module.exports = { register, login };
+module.exports = { register, login, logout };
