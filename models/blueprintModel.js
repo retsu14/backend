@@ -12,12 +12,15 @@ const blueprintSchema = new mongoose.Schema({
     },
     sections: [{
         title: String,
-        stateNamw: String,
+        main: String,
         fields: [{
             title: String,
             stateName: String,
             type: String,
             rules: String,
+            data: [{
+                
+            }]
         }]
     }]
 })
