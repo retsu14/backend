@@ -20,7 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 
 connectDb();
 
-app.use("/api/auth", require("./routes/auth/authRoutes"));
+app.use("/api/auth", require("./routes/auth/auth-route"));
+app.use("/api/blueprints", require("./routes/blueprint/blueprint-route"));
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);

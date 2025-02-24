@@ -1,4 +1,4 @@
-const User = require("../models/userModel");
+const User = require("../models/user-model");
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 const { validationResult } = require("express-validator");
@@ -27,7 +27,9 @@ const register = asyncHandler(async (req, res) => {
     if (existingUser) {
       res.status(400).json({ message: "User already exists" });
     }
-    let newUser = new User({ name, email, password });
+
+    const avatar = `https://avatar.iran.liara.run/public/boy?name=${name}`;
+    let newUser = new User({ avatar, name, email, password });
 
     await newUser.save();
 
@@ -58,17 +60,20 @@ const login = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      res.status(400).json({ message: "Invalid credentials" });
+      res.status(400).json({ message: "Email is not yet registered." });
     }
 
     const isMatch = await user.matchPassword(password);
 
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res
+        .status(400)
+        .json({ message: "Incorrect Password. Please try again." });
     } else {
-      generateToken(user._id, res);
+      generateToken(user._id, user.role, res);
       res.status(200).json({
         message: "User logged in successfully",
+        avatar: user.avatar,
         name: user.name,
         email: user.email,
       });
@@ -93,15 +98,15 @@ const logout = asyncHandler(async (req, res) => {
   }
 });
 
-const generateToken = (id, res) => {
-  const token = jwt.sign({ id }, process.env.JWT, {
+const generateToken = (id, role, res) => {
+  const token = jwt.sign({ id, role }, process.env.JWT, {
     expiresIn: "1d",
   });
   res.cookie("jwt", token, {
     maxAge: 15 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     sameSite: "strict",
-    secure: process.env.NODE_ENV !== "development",
+    secure: process.env.NODE_ENV === "production",
   });
 };
 
