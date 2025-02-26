@@ -16,7 +16,6 @@ router.post(
   [
     body("name").not().isEmpty().withMessage("Name is required"),
     body("domain").not().isEmpty().withMessage("Domain is required"),
-    body("hook").not().isEmpty().withMessage("Hook is required"),
   ],
   createSite
 );
@@ -27,7 +26,6 @@ router.put(
   [
     body("name").not().isEmpty().withMessage("Name is required"),
     body("domain").not().isEmpty().withMessage("Domain is required"),
-    body("hook").not().isEmpty().withMessage("Hook is required"),
   ],
   updateSite
 );
