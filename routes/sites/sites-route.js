@@ -1,0 +1,35 @@
+const expess = require("express");
+const router = expess.Router();
+const { body } = require("express-validator");
+const {
+  getSite,
+  createSite,
+  deleteSite,
+  updateSite,
+} = require("../../controllers/sites-controller");
+const { protect } = require("../../middlewares/auth-middleware");
+
+router.get("/", protect, getSite);
+router.post(
+  "/create",
+  protect,
+  [
+    body("name").not().isEmpty().withMessage("Name is required"),
+    body("domain").not().isEmpty().withMessage("Domain is required"),
+    body("hook").not().isEmpty().withMessage("Hook is required"),
+  ],
+  createSite
+);
+router.delete("/delete/:id", protect, deleteSite);
+router.put(
+  "/update/:id",
+  protect,
+  [
+    body("name").not().isEmpty().withMessage("Name is required"),
+    body("domain").not().isEmpty().withMessage("Domain is required"),
+    body("hook").not().isEmpty().withMessage("Hook is required"),
+  ],
+  updateSite
+);
+
+module.exports = router;
