@@ -81,17 +81,4 @@ const updateSite = expressAsyncHandler(async (req, res) => {
   }
 });
 
-const getById = expressAsyncHandler(async (req, res) => {
-  try {
-    const id = req.params.id;
-
-    const site = await Site.findById(id);
-
-    res.status(200).json(site);
-  } catch (error) {
-    res.status(500).json({ error: "Server error" });
-    console.log(error);
-  }
-});
-
-module.exports = { createSite, getSite, deleteSite, updateSite, getById };
+module.exports = { createSite, getSite, deleteSite, updateSite };

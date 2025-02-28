@@ -54,4 +54,37 @@ const deleteBlueprint = expressAsyncHandler(async (req, res) => {
   });
 });
 
-module.exports = { createBlueprint, getBlueprint, deleteBlueprint };
+const updateBlueprint = expressAsyncHandler(async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  try {
+    const { title, data } = req.body;
+
+    const blueprint = await Blueprint.findById(req.params.id);
+
+    if (!blueprint) {
+      return res.status(404).json({ error: "Blueprint not found" });
+    }
+
+    blueprint.title = title || blueprint.title;
+    blueprint.data = data || blueprint.data;
+
+    const updatedBlueprint = await blueprint.save();
+
+    res.status(200).json({
+      message: "Blueprint updated successfully",
+      updatedBlueprint,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+module.exports = {
+  createBlueprint,
+  getBlueprint,
+  deleteBlueprint,
+  updateBlueprint,
+};

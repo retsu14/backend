@@ -6,12 +6,10 @@ const {
   createSite,
   deleteSite,
   updateSite,
-  getById,
 } = require("../../controllers/sites-controller");
 const { protect } = require("../../middlewares/auth-middleware");
 
 router.get("/", protect, getSite);
-router.get("/:id", protect, getById);
 router.post(
   "/create",
   protect,

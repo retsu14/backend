@@ -5,6 +5,7 @@ const {
   createBlueprint,
   getBlueprint,
   deleteBlueprint,
+  updateBlueprint,
 } = require("../../controllers/blueprint-controller");
 const { protect } = require("../../middlewares/auth-middleware");
 
@@ -19,5 +20,14 @@ router.post(
   createBlueprint
 );
 router.delete("/delete/:id", protect, deleteBlueprint);
+router.put(
+  "/update/:id",
+  protect,
+  [
+    body("title").optional().not().isEmpty().withMessage("Title is required"),
+    body("data").optional().not().isEmpty().withMessage("Data is required"),
+  ],
+  updateBlueprint
+);
 
 module.exports = router;

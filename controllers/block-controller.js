@@ -58,7 +58,7 @@ const deleteBlock = expressAsyncHandler(async (req, res) => {
   });
 });
 
-const updateDelete = expressAsyncHandler(async (req, res) => {
+const updateBlock = expressAsyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -70,4 +70,4 @@ const updateDelete = expressAsyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createBlock, getBlock, deleteBlock, updateDelete };
+module.exports = { createBlock, getBlock, deleteBlock, updateBlock };

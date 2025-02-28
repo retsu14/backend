@@ -6,7 +6,7 @@ const {
   createBlock,
   getBlock,
   deleteBlock,
-  updateDelete,
+  updateBlock,
 } = require("../../controllers/block-controller");
 
 router.get("/", protect, getBlock);
@@ -20,6 +20,18 @@ router.post(
     body("site").not().isEmpty().withMessage("Site is required"),
   ],
   createBlock
+);
+router.post("delete/:id", protect, deleteBlock);
+router.post(
+  "/update/:id",
+  protect,
+  [
+    body("name").not().isEmpty().withMessage("Name is required"),
+    body("component").not().isEmpty().withMessage("Component is required"),
+    body("blueprint").not().isEmpty().withMessage("Blueprint is required"),
+    body("site").not().isEmpty().withMessage("Site is required"),
+  ],
+  updateBlock
 );
 
 module.exports = router;
