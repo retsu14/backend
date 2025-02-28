@@ -6,13 +6,23 @@ const blockScheme = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  name: {
+    type: String,
+    required: true,
+  },
   blueprint: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Blueprint",
     required: true,
   },
-  data: {
-    type: Object,
+  component: {
+    type: String,
+    required: true,
+  },
+  image: String,
+  site: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Site",
     required: true,
   },
 });

@@ -23,6 +23,7 @@ connectDb();
 app.use("/api/auth", require("./routes/auth/auth-route"));
 app.use("/api/blueprints", require("./routes/blueprint/blueprint-route"));
 app.use("/api/sites", require("./routes/sites/sites-route"));
+app.use("/api/blocks", require("./routes/block/block-route"));
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);

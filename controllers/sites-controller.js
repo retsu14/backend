@@ -12,6 +12,7 @@ const createSite = expressAsyncHandler(async (req, res) => {
     const { name, domain, hook } = req.body;
 
     const site = new Site({
+      user: req.user._id,
       name,
       domain,
       hook,
@@ -80,4 +81,17 @@ const updateSite = expressAsyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createSite, getSite, deleteSite, updateSite };
+const getById = expressAsyncHandler(async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const site = await Site.findById(id);
+
+    res.status(200).json(site);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+    console.log(error);
+  }
+});
+
+module.exports = { createSite, getSite, deleteSite, updateSite, getById };
