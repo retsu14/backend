@@ -65,7 +65,46 @@ const updateBlock = expressAsyncHandler(async (req, res) => {
   }
 
   try {
+    const { name, blueprint, component, image, site } = req.body;
+
+    const block = await Block.findById(req.params.id);
+
+    if (!block) {
+      return res.status(404).json({ error: "Block not found" });
+    }
+
+    if (blueprint) {
+      const foundBlueprint = await Blueprint.findById(blueprint);
+      if (!foundBlueprint) {
+        return res.status(400).json({
+          message: "Invalid Blueprint",
+        });
+      }
+    }
+
+    if (site) {
+      const foundSite = await Site.findById(site);
+      if (!foundSite) {
+        return res.status(400).json({
+          message: "Invalid Site",
+        });
+      }
+    }
+
+    block.name = name || block.name;
+    block.blueprint = blueprint || block.blueprint;
+    block.component = component || block.component;
+    block.image = image || block.image;
+    block.site = site || block.site;
+
+    const updatedBlock = await block.save();
+
+    res.status(200).json({
+      message: "Block has been updated successfully",
+      block: updatedBlock,
+    });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
 });

@@ -22,7 +22,7 @@ router.post(
   createBlock
 );
 router.delete("/delete/:id", protect, deleteBlock);
-router.post(
+router.put(
   "/update/:id",
   protect,
   [
