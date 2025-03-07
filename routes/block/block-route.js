@@ -8,11 +8,13 @@ const {
   deleteBlock,
   updateBlock,
 } = require("../../controllers/block-controller");
+const upload = require("../../middlewares/multer");
 
 router.get("/", protect, getBlock);
 router.post(
   "/create",
   protect,
+  upload.single("image"),
   [
     body("name").not().isEmpty().withMessage("Name is required"),
     body("component").not().isEmpty().withMessage("Component is required"),
@@ -25,6 +27,7 @@ router.delete("/delete/:id", protect, deleteBlock);
 router.put(
   "/update/:id",
   protect,
+  upload.single("image"),
   [
     body("name").not().isEmpty().withMessage("Name is required"),
     body("component").not().isEmpty().withMessage("Component is required"),

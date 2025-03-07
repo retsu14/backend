@@ -10,7 +10,8 @@ const createBlock = expressAsyncHandler(async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
   try {
-    const { name, blueprint, component, image, site } = req.body;
+    const { name, blueprint, component, site } = req.body;
+    const image = req.file ? req.file.path : null;
 
     //validation if the selected data existed
     const foundBlueprint = await Blueprint.findById(blueprint);
@@ -65,7 +66,8 @@ const updateBlock = expressAsyncHandler(async (req, res) => {
   }
 
   try {
-    const { name, blueprint, component, image, site } = req.body;
+    const { name, blueprint, component, site } = req.body;
+    const image = req.file ? req.file.path : null;
 
     const block = await Block.findById(req.params.id);
 
