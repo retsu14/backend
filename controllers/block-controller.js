@@ -47,7 +47,10 @@ const createBlock = expressAsyncHandler(async (req, res) => {
 
 const getBlock = expressAsyncHandler(async (req, res) => {
   try {
-    const blocks = await Block.find().populate({ path: 'blueprint site', select: 'name title' });
+    const blocks = await Block.find().populate({
+      path: "blueprint site",
+      select: "name title",
+    });
 
     res.status(200).json(blocks);
   } catch (error) {
@@ -57,11 +60,16 @@ const getBlock = expressAsyncHandler(async (req, res) => {
 });
 
 const deleteBlock = expressAsyncHandler(async (req, res) => {
-  await Block.findByIdAndDelete(req.params.id);
+  try {
+    await Block.findByIdAndDelete(req.params.id);
 
-  res.status(201).json({
-    message: "Block has been deleted successfully",
-  });
+    res.status(201).json({
+      message: "Block has been deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 const updateBlock = expressAsyncHandler(async (req, res) => {
